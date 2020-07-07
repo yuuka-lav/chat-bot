@@ -1,22 +1,25 @@
 import React from 'react'
 import { Chat } from './index'
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, createStyles } from '@material-ui/core/styles';
 import List from '@material-ui/core/List';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    width: '100%',
-    maxWidth: '36ch',
-    backgroundColor: theme.palette.background.paper,
-  },
-}));
+const useStyles = makeStyles(() => (
+  createStyles({
+    'chats': {
+      height: 380,
+      padding: '0',
+      // 380以上になったときスクロールバーを出す
+      overflow: 'auto'
+    }
+  })
+));
 
 
 const Chats = (props) => {
   const classes = useStyles();
 
   return(
-    <List className={classes.root}>
+    <List className={classes.chats} id={'scroll-area'} >
       { props.chats.map((chat, index) => {
         return(
           < Chat 

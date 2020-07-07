@@ -2,6 +2,7 @@ import React from 'react';
 import './assets/styles/style.css';
 import { AnswersList, Chats } from './components/index'
 import defaultDataset from './dataset';
+import Form from './components/Forms/Form';
 
 export default class App extends React.Component {
   constructor(props){
@@ -15,13 +16,22 @@ export default class App extends React.Component {
     }
     // 子供にコールバック関数を渡したい時はrenderされるたびに新しく生成されるのを防ぐため
     this.selectAnswer = this.selectAnswer.bind(this)
-
+    this.handleClose = this.handleClose.bind(this)
+    this.handleClickOpen = this.handleClickOpen.bind(this)
   }
-
 
   componentDidMount() {
     const initAnswer = '';
     this.selectAnswer(initAnswer, this.state.currentId)
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot ) {
+    const scrollArea = document.getElementById('scroll-area')
+    // scrollAreaが存在していたら
+    if (scrollArea) {
+      // この書き方でscrollが常に下に行く
+      scrollArea.scrollTop = scrollArea.scrollHeight;
+    }
   }
 
   displayNextQuestion = (nextQuestionId) => {
@@ -41,7 +51,17 @@ export default class App extends React.Component {
   selectAnswer = (selectedAnswer, nextQuestionId) => {
     switch(true) {
       case(nextQuestionId === 'init'):
-        this.displayNextQuestion(nextQuestionId)
+        setTimeout(() => this.displayNextQuestion(nextQuestionId), 500);
+        break;
+      case(/^https:*/.test(nextQuestionId)):
+        const a = document.createElement('a');
+        a.href = nextQuestionId;
+        // 別タブで開くようになる
+        a.target = '_blank';
+        a.click();
+        break;
+      case(nextQuestionId === 'contact'):
+        this.handleClickOpen();
         break;
       // init以外の時
       default:
@@ -51,18 +71,24 @@ export default class App extends React.Component {
           text: selectedAnswer,
           type: 'answer'
         })
-
         this.setState({
             chats: initChats
         })
-
-        this.displayNextQuestion(nextQuestionId)
-
+        // 遅延表示させる
+        setTimeout(() => this.displayNextQuestion(nextQuestionId), 1000);
         break;
     }
   }
 
-  // 一番初めにrenderがはしる　answersは空の状態
+  handleClickOpen = () => {
+    this.setState({open: true});
+  };
+
+  handleClose = () => {
+    this.setState({open: false});
+  };
+
+  // 一番初めにrenderがはしる answersは空の状態
   render() {
     return (
       <section className="c-section">
@@ -71,6 +97,10 @@ export default class App extends React.Component {
           < AnswersList 
             answers={ this.state.answers }
             select={ this.selectAnswer }
+          />
+          < Form 
+            open={this.state.open}
+            handleClose={this.handleClose}
           />
         </div>
       </section>

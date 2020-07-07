@@ -7,7 +7,7 @@ import Pfimage from '../assets/img/pf-image.jpg'
 
 
 const Chat = (props) => {
-  // true か　falseで返す
+  // true か falseで返す
   const isQuesion = (props.type === 'question');
   // trueだったら 'p-chat__row'を返す
   const classes = isQuesion ? 'p-chat__row' : 'p-chat__reverse'
