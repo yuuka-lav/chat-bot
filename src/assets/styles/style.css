@@ -1,7 +1,8 @@
 .c-section {
   position: relative;
   height: 100vh;
-  width: 100%;
+  width: 90%;
+  margin: auto;
 }
 
 .c-box {
@@ -13,6 +14,7 @@
   max-width: 432px;
   padding: 0 1rem;
   width: 100%;
+  
 
   /* Vertical and horizontal center alignment */
   position: absolute;

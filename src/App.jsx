@@ -1,8 +1,8 @@
 import React from 'react';
 import './assets/styles/style.css';
 import { AnswersList, Chats } from './components/index'
-import defaultDataset from './dataset';
 import Form from './components/Forms/Form';
+import { db } from './firebase/index'
 
 export default class App extends React.Component {
   constructor(props){
@@ -11,7 +11,7 @@ export default class App extends React.Component {
       answers: [],
       chats: [],
       currentId: 'init',
-      dataset: defaultDataset,
+      dataset: {},
       open: false
     }
     // 子供にコールバック関数を渡したい時はrenderされるたびに新しく生成されるのを防ぐため
@@ -20,9 +20,27 @@ export default class App extends React.Component {
     this.handleClickOpen = this.handleClickOpen.bind(this)
   }
 
+  initDataset = (dataset) => {
+    this.setState({ dataset: dataset })
+  }
+
   componentDidMount() {
-    const initAnswer = '';
-    this.selectAnswer(initAnswer, this.state.currentId)
+    (async () => {
+      const dataset = this.state.dataset
+
+      await db.collection('questions').get().then( snapshots =>{
+        snapshots.forEach(doc => {
+          const id = doc.id
+          const data  = doc.data()
+          dataset[id] = data
+        })
+      })
+      // 入れ込んだデータを空のところの入れてくれる関数を呼び出す
+      this.initDataset(dataset)
+      const initAnswer = '';
+      this.selectAnswer(initAnswer, this.state.currentId)
+    })()
+    
   }
 
   componentDidUpdate(prevProps, prevState, snapshot ) {
