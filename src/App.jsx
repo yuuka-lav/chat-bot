@@ -1,76 +1,54 @@
-import React from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import './assets/styles/style.css';
 import { AnswersList, Chats } from './components/index'
 import Form from './components/Forms/Form';
 import { db } from './firebase/index'
 
-export default class App extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      answers: [],
-      chats: [],
-      currentId: 'init',
-      dataset: {},
-      open: false
-    }
-    // 子供にコールバック関数を渡したい時はrenderされるたびに新しく生成されるのを防ぐため
-    this.selectAnswer = this.selectAnswer.bind(this)
-    this.handleClose = this.handleClose.bind(this)
-    this.handleClickOpen = this.handleClickOpen.bind(this)
-  }
-
-  initDataset = (dataset) => {
-    this.setState({ dataset: dataset })
-  }
-
-  componentDidMount() {
+const App = () => {
+  const [answers, setAnswers] = useState([]);
+  const [chats, setChats] = useState([]);
+  const [currentId, setCurrentId] = useState('init');
+  const [dataset, setDataset] = useState({});
+  const [open, setOpen] = useState(false);
+  
+  useEffect(() => {
     (async () => {
-      const dataset = this.state.dataset
+      const initDataset = {};
 
       await db.collection('questions').get().then( snapshots =>{
         snapshots.forEach(doc => {
           const id = doc.id
           const data  = doc.data()
-          dataset[id] = data
+          initDataset[id] = data
         })
       })
-      // 入れ込んだデータを空のところの入れてくれる関数を呼び出す
-      this.initDataset(dataset)
-      const initAnswer = '';
-      this.selectAnswer(initAnswer, this.state.currentId)
+      setDataset(initDataset)
+      displayNextQuestion(currentId, initDataset[currentId])
     })()
-    
-  }
+  // 一回だけ実行して欲しいので第二引数を渡している
+  },[])
 
-  componentDidUpdate(prevProps, prevState, snapshot ) {
+  useEffect(() => { 
     const scrollArea = document.getElementById('scroll-area')
     // scrollAreaが存在していたら
     if (scrollArea) {
       // この書き方でscrollが常に下に行く
       scrollArea.scrollTop = scrollArea.scrollHeight;
     }
-  }
+    // 第二引数を渡さないことで何度も呼び出される
+  })
 
-  displayNextQuestion = (nextQuestionId) => {
-    const chats = this.state.chats;
-    chats.push({
-      text: this.state.dataset[nextQuestionId].question,
+  const displayNextQuestion = (nextQuestionId, nextDataset) => {
+    addChats({
+      text: nextDataset.question,
       type: 'question'
     })
-
-    this.setState({
-      chats: chats,
-      answers: this.state.dataset[nextQuestionId].answers,
-      currentId: nextQuestionId
-    })
+    setAnswers(nextDataset.answers)
+    setCurrentId(nextQuestionId)
   }
 
-  selectAnswer = (selectedAnswer, nextQuestionId) => {
+  const selectAnswer = (selectedAnswer, nextQuestionId) => {
     switch(true) {
-      case(nextQuestionId === 'init'):
-        setTimeout(() => this.displayNextQuestion(nextQuestionId), 500);
-        break;
       case(/^https:*/.test(nextQuestionId)):
         const a = document.createElement('a');
         a.href = nextQuestionId;
@@ -79,50 +57,51 @@ export default class App extends React.Component {
         a.click();
         break;
       case(nextQuestionId === 'contact'):
-        this.handleClickOpen();
+        handleClickOpen();
         break;
       // init以外の時
       default:
-        // 空の initChats にchatの内容を入れ込む
-        const initChats = this.state.chats;
-        initChats.push({
+        addChats({
           text: selectedAnswer,
           type: 'answer'
         })
-        this.setState({
-            chats: initChats
-        })
         // 遅延表示させる
-        setTimeout(() => this.displayNextQuestion(nextQuestionId), 1000);
+        setTimeout(() => displayNextQuestion(nextQuestionId, dataset[nextQuestionId]), 1000);
         break;
     }
   }
 
-  handleClickOpen = () => {
-    this.setState({open: true});
+  // 新しくchatに加わる
+  const addChats = (chat) => {
+    setChats(prevChats => {
+      return [...prevChats, chat]
+    })
+  }
+
+  const handleClickOpen = () => {
+    setOpen(true) 
   };
 
-  handleClose = () => {
-    this.setState({open: false});
-  };
+  const handleClose = useCallback(() => {
+    setOpen(false) 
+  }, [setOpen]);
 
-  // 一番初めにrenderがはしる answersは空の状態
-  render() {
+  
     return (
       <section className="c-section">
         <div className="c-box">
-          < Chats chats={ this.state.chats }/>
+          < Chats chats={ chats }/>
           < AnswersList 
-            answers={ this.state.answers }
-            select={ this.selectAnswer }
+            answers={ answers }
+            select={ selectAnswer }
           />
           < Form 
-            open={this.state.open}
-            handleClose={this.handleClose}
+            open={ open }
+            handleClose={ handleClose }
           />
         </div>
       </section>
     );
-  }
 }
 
+export default App
