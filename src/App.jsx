@@ -14,7 +14,6 @@ const App = () => {
   useEffect(() => {
     (async () => {
       const initDataset = {};
-
       await db.collection('questions').get().then( snapshots =>{
         snapshots.forEach(doc => {
           const id = doc.id
