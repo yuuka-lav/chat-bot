@@ -9,6 +9,38 @@ import Brightness2Icon from '@material-ui/icons/Brightness2';
 import BrightnessHighIcon from '@material-ui/icons/BrightnessHigh';
 import {makeStyles} from "@material-ui/styles";
 
+import i18n from 'i18next';
+import enTranslation from './locales/en/translation.json';
+import jaTranslation from './locales/ja/translation.json';
+import {initReactI18next} from 'react-i18next';
+import {useTranslation} from 'react-i18next';
+
+const resources = {
+  en: {
+    translation: enTranslation,
+  },
+  ja: {
+    translation: jaTranslation,
+  },
+};
+
+i18n
+  .use(initReactI18next)
+  .init({
+    lng: 'ja',
+    fallbackLng: 'ja',
+    debug: true,
+
+    interpolation: {
+      escapeValue: false,
+    },
+
+    react: {
+      wait: true,
+    },
+    resources: resources,
+  });
+
 const useStyles = makeStyles({
   section: {
     position: "relative",
@@ -32,6 +64,8 @@ const useStyles = makeStyles({
 })
 
 const App = () => {
+  const [t, i18n] = useTranslation();
+  const [lang, setLang] = useState('ja');
   const classes = useStyles();
   const [answers, setAnswers] = useState([]);
   const [chats, setChats] = useState([]);
@@ -41,6 +75,10 @@ const App = () => {
   const [darkMode, setDarkMode] = useState(
     localStorage.getItem("darkMode") === "on" ? true : false
   );
+
+  useEffect(() => {
+    i18n.changeLanguage(lang);
+  }, [lang, i18n]);
 
   const handleDarkModeOn = () => {
     localStorage.setItem("darkMode", "on");
@@ -137,6 +175,7 @@ const App = () => {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <section className={classes.section}>
+        <button onClick={() => setLang(lang === 'en' ? 'ja' : 'en')}>{t('言語を切り替え')}</button>
         {darkMode ? (
         <IconButton color="inherit" onClick={handleDarkModeOff}>
           <Brightness2Icon />
