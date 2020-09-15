@@ -1,0 +1,88 @@
+{
+  "言語を切り替え": "change language",
+  "こんにちは！優香へのご用件はなんでしょうか？": "Hello! What are your requirements for Yuuka?",
+  
+  "仕事を依頼したい": "I want to request a job.",
+  "エンジニアとしてのスキルが見たい": "I want to see my skills as an engineer.",
+  "優香について詳しく知りたい": "I want to know more about Yuuka.",
+  "お付き合いしたい": "I want to get along",
+  
+  "どのようなお仕事でしょうか？": "What kind of work is it?",
+  
+  "Webサイトを制作してほしい": "I want you to create a website",
+  "Webアプリを開発してほしい": "I want you to develop a web application",
+  "相談にのってほしい": "I want you to consult",
+  "その他": "Other",
+
+
+  "website": {
+      "answers": [
+          {"content": "問い合わせる", "nextId": "contact"},
+          {"content": "最初の質問に戻る", "nextId": "init"}
+      ],
+      "question": "Webサイト細作についてですね。コチラからお問い合わせできます。"
+  },
+  "webapp": {
+      "answers": [
+          {"content": "問い合わせる", "nextId": "contact"},
+          {"content": "最初の質問に戻る", "nextId": "init"}
+      ],
+      "question": "Webアプリ開発についてですね。コチラからお問い合わせできます。"
+  },
+  "consultation": {
+      "answers": [
+          {"content": "問い合わせる", "nextId": "contact"},
+          {"content": "最初の質問に戻る", "nextId": "init"}
+      ],
+      "question": "相談があるんですね。詳しくお話を聞かせてください。コチラからお問い合わせできます。"
+  },
+  "other_jobs": {
+      "answers": [
+          {"content": "問い合わせる", "nextId": "contact"},
+          {"content": "最初の質問に戻る", "nextId": "init"}
+      ],
+      "question": "その他についてですね。コチラからお問い合わせできます。"
+  },
+  "consultant": {
+      "answers": [
+          {"content": "ポートフォリオをのぞいてみる", "nextId": "https://priceless-darwin-2f9176.netlify.app/"},
+          {"content": "githubをのぞいてみる", "nextId": "https://github.com/yuuka-lav"},
+          {"content": "履歴書をのぞいてみる", "nextId": "https://docs.google.com/document/d/1HMK8Wr9NkO4BHqqFxmkjWl1_LfUx6BnJ5lqeu7D83Ig/edit?usp=sharing"},
+          {"content": "最初の質問に戻る", "nextId": "init"}
+      ],
+      "question": "今まで制作したアプリをぜひご覧ください。"
+  },
+  "community": {
+      "answers": [
+          {"content": "どんな活動をしているの？", "nextId": "community_activity"},
+          {"content": "好きなものを教えて欲しい", "nextId": "like"},
+          {"content": "最初の質問に戻る", "nextId": "init"}
+      ],
+      "question": "私がどんな人なのか、どんな活動をしているのか、優香についてたくさん知ってください！"
+  },
+  "community_activity": {
+      "answers": [
+          {"content": "どんな大学か知りたい", "nextId": "https://www.kwansei.ac.jp/"},
+          {"content": "ダンスサークルをのぞきたい", "nextId": "https://www.instagram.com/supernova_0506/?hl=ja"},
+          {"content": "優香が書いた論文が読みたい", "nextId": "https://docs.google.com/document/d/1i5uEpNsPQfCkKoY4UrIrxIYdnVBtLJWnq0172kosFQI/edit?usp=sharing"},
+          {"content": "最初の質問に戻る", "nextId": "init"}
+      ],
+      "question": "四年生の大学の経済学部で、ダンスサークルに所属しています。ウェディング業界について、経済的観点から論文を作成しました。"
+  },
+  "like": {
+    "answers": [
+        {"content": "おすすめの美女と野獣をみる", "nextId": "https://www.youtube.com/watch?v=DjsPvSB2Wnw"},
+        {"content": "優香について詳しく知りたい", "nextId": "community"},
+        {"content": "最初の質問に戻る", "nextId": "init"}
+    ],
+    "question": "ディズニープリンセスの’美女と野獣’の大ファンです🌹"
+},
+  "dating": {
+      "answers": [
+          {"content": "連絡する", "nextId": "https://priceless-darwin-2f9176.netlify.app/#contact"},
+          {"content": "最初の質問に戻る", "nextId": "init"}
+      ],
+      "question": "まずは一緒にランチでもいかがですか？連絡してください😘"
+  }
+}
+

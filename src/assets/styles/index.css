@@ -11,3 +11,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* labelの大文字を小文字に直す */
+.MuiButton-label {
+  text-transform: none;
+}
