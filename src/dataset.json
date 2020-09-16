@@ -22,7 +22,7 @@
           {"content": "問い合わせる", "nextId": "contact"},
           {"content": "最初の質問に戻る", "nextId": "init"}
       ],
-      "question": "Webサイト細作についてですね。コチラからお問い合わせできます。"
+      "question": "Webサイト制作についてですね。コチラからお問い合わせできます。"
   },
   "webapp": {
       "answers": [
